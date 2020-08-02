@@ -24,6 +24,14 @@ class SplitViewController: NSViewController, NSTextViewDelegate {
         do {
             output = try DownView(frame: rightView!.bounds, markdownString: "")
             rightView!.addSubview(output!)
+            let constraints = [
+                buildConstraint(attribute: .top),
+                buildConstraint(attribute: .bottom),
+                buildConstraint(attribute: .left),
+                buildConstraint(attribute: .right),
+            ]
+            rightView!.addConstraints(constraints)
+
         } catch {
             NSLog("Init error: ", error.localizedDescription)
         }
@@ -35,5 +43,11 @@ class SplitViewController: NSViewController, NSTextViewDelegate {
         } catch {
             NSLog(error.localizedDescription)
         }
+    }
+    
+    func buildConstraint(attribute: NSLayoutConstraint.Attribute) -> NSLayoutConstraint {
+        let c = NSLayoutConstraint(item: rightView, attribute: attribute, relatedBy: .equal, toItem: output, attribute: attribute, multiplier: 1, constant: 0)
+        c.isActive = true
+        return c
     }
 }
